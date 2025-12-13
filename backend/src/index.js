@@ -14,11 +14,11 @@ dotenv.config();
 const PORT = process.env.PORT || 5001;
 const __dirname = path.resolve();
 
-// --- Middleware --- //
+// -------------------- Middleware -------------------- //
 app.use(express.json());
 app.use(cookieParser());
 
-// Log every request (useful for Render logs)
+// Log every request for debugging
 app.use((req, res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
   next();
@@ -30,29 +30,28 @@ app.use(cors({
   credentials: true
 }));
 
-// --- API Routes --- //
+// -------------------- API Routes -------------------- //
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 
-// --- Serve Frontend in Production --- //
+// -------------------- Serve Frontend in Production -------------------- //
 if (process.env.NODE_ENV === "production") {
-  // Adjust the path if your build folder is different
-  const frontendPath = path.join(__dirname, "public");
+  const frontendPath = path.join(__dirname, "public"); // adjust if your build folder is different
   app.use(express.static(frontendPath));
 
-  // SPA fallback route
-  app.get("/:path(*)", (req, res) => {
+  // SPA fallback route for React
+  app.use((req, res) => {
     res.sendFile(path.join(frontendPath, "index.html"));
   });
 }
 
-// --- Global Error Handler --- //
+// -------------------- Global Error Handler -------------------- //
 app.use((err, req, res, next) => {
   console.error(err);
   res.status(500).json({ error: "Something went wrong" });
 });
 
-// --- Start Server & Connect DB --- //
+// -------------------- Start Server & Connect DB -------------------- //
 server.listen(PORT, async () => {
   console.log(`Server running on PORT: ${PORT}`);
   try {
