@@ -36,7 +36,8 @@ app.use("/api/messages", messageRoutes);
 
 // -------------------- Serve Frontend in Production -------------------- //
 if (process.env.NODE_ENV === "production") {
-  const frontendPath = path.join(__dirname, "public"); // adjust if your build folder is different
+  // Point to the frontend build folder
+  const frontendPath = path.join(__dirname, "../frontend/dist");
   app.use(express.static(frontendPath));
 
   // SPA fallback route for React
