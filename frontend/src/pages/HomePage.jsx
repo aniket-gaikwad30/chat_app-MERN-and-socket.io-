@@ -9,13 +9,21 @@ const HomePage = () => {
 
   return (
     <div className="h-[100dvh] bg-base-200">
-      <div className="flex h-full pt-16"> {/* Navbar height */}
+      <div className="flex h-full pt-16">
+        {" "}
+        {/* Navbar height */}
         <div className="flex w-full h-full bg-base-100">
           <Sidebar />
 
           {/* On mobile show chat OR placeholder */}
           <div className="flex-1">
-            {!selectedUser ? <NoChatSelected /> : <ChatContainer />}
+            {/* Desktop placeholder only */}
+            <div className="flex-1 hidden lg:flex">
+              {!selectedUser && <NoChatSelected />}
+            </div>
+
+            {/* Mobile chat */}
+            <div className="flex-1">{selectedUser && <ChatContainer />}</div>
           </div>
         </div>
       </div>
